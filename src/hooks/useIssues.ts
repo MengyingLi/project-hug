@@ -121,9 +121,10 @@ export function useUpdateIssue() {
 
   return useMutation({
     mutationFn: async ({ id, ...updates }: Partial<Issue> & { id: string }) => {
+      const { assignee, reporter, cycle, labels, ...dbUpdates } = updates as any;
       const { data, error } = await supabase
         .from('issues')
-        .update(updates)
+        .update(dbUpdates)
         .eq('id', id)
         .select()
         .single();
